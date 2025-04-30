@@ -37,7 +37,7 @@
                             <option value="">{{ __('Alle statussen') }}</option>
                             <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>{{ __('Bevestigd') }}</option>
                             <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('In behandeling') }}</option>
-                            <option value="canceled" {{ request('status') == 'canceled' ? 'selected' : '' }}>{{ __('Geannuleerd') }}</option>
+                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>{{ __('Geannuleerd') }}</option>
                         </select>
                     </div>
                     
