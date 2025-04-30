@@ -17,13 +17,9 @@
 
 @if($booking->options->isNotEmpty())
 **{{ __('emails.details.options_title') }}**
-<ul>
 @foreach($booking->options as $option)
-    {{-- Assuming option name is already translated if needed --}}
-    <li>{{ $option->pivot->quantity }}x {{ $option->name }} (€{{ number_format($option->pivot->price_at_booking * $option->pivot->quantity, 2) }})</li>
+*   {{ $option->pivot->quantity }}x {{ $option->getTranslation('name', App::getLocale()) }} (€{{ number_format($option->pivot->price_at_booking * $option->pivot->quantity, 2) }})
 @endforeach
-</ul>
-@endif
 
 **{{ __('emails.booking_confirmed.total_final') }}:** €{{ number_format($booking->total_price, 2) }}
 

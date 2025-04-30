@@ -26,10 +26,10 @@ class AdminBookingController extends Controller
                 $query->where('status', $request->status);
             }
             if ($request->filled('check_in_from')) {
-                $query->whereDate('check_in', '>=', $request->check_in_from);
+                $query->whereDate('check_in_date', '>=', $request->check_in_from);
             }
             if ($request->filled('check_in_to')) {
-                $query->whereDate('check_in', '<=', $request->check_in_to);
+                $query->whereDate('check_in_date', '<=', $request->check_in_to);
             }
             // Add more filters if needed (e.g., search by user name, room name)
 

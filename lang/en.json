@@ -338,6 +338,7 @@
     "bookings.actions.details": "Details",
     "bookings.actions.cancel_confirm": "Are you sure you want to cancel this booking?",
     "bookings.actions.cancel": "Cancel",
+    "bookings.details": "Booking Details",
     "bookings.help.title": "Need help?",
     "bookings.help.description": "Contact us for questions or changes to your booking",
     "bookings.help.change_policy": "View change policy",
@@ -537,5 +538,7 @@
     "messages.complete_profile_description": "Filling in your personal details now is optional, but it will help you book your stay faster in the future.",
     "messages.complete_profile_skip": "Skip for Now",
     "messages.complete_profile_save": "Save My Details",
-    "messages.profile_completed_successfully": "Your profile has been updated successfully!"
+    "messages.profile_completed_successfully": "Your profile has been updated successfully!",
+    "By clicking confirm, you agree to our :terms_of_service and :privacy_policy": "By clicking confirm, you agree to our :terms_of_service and :privacy_policy.",
+    "messages.booking_created": "Booking successfully created!"
 } 

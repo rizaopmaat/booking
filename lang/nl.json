@@ -341,6 +341,7 @@
     "bookings.actions.details": "Details",
     "bookings.actions.cancel_confirm": "Weet u zeker dat u deze boeking wilt annuleren?",
     "bookings.actions.cancel": "Annuleren",
+    "bookings.details": "Boekingsdetails",
     "bookings.help.title": "Hulp nodig?",
     "bookings.help.description": "Contact opnemen voor vragen of wijzigingen in uw boeking",
     "bookings.help.change_policy": "Wijzigingsbeleid bekijken",
@@ -440,7 +441,7 @@
     "Last Name": "Achternaam",
     "Phone Number": "Telefoonnummer",
     "Your details are pre-filled from your profile. To change them, please go to your profile settings.": "Uw gegevens zijn vooraf ingevuld vanuit uw profiel. Om ze te wijzigen, ga naar uw profielinstellingen.",
-    "By clicking confirm, you agree to our terms and conditions.": "Door te klikken op bevestigen, gaat u akkoord met onze :terms_of_service en :privacy_policy.",
+    "By clicking confirm, you agree to our :terms_of_service and :privacy_policy": "Door te klikken op bevestigen, gaat u akkoord met onze :terms_of_service en :privacy_policy.",
     "Confirm & Request Booking": "Bevestig & Vraag Boeking Aan",
     "profile.update_info_description": "Werk de profielinformatie en het e-mailadres van uw account bij.",
     "terms.popup_message": "Servicevoorwaarden pagina is in ontwikkeling.",
@@ -540,5 +541,6 @@
     "messages.complete_profile_description": "Het invullen van je persoonlijke gegevens is optioneel, maar het zal je in de toekomst helpen je verblijf sneller te boeken.",
     "messages.complete_profile_skip": "Nu overslaan",
     "messages.complete_profile_save": "Mijn gegevens opslaan",
-    "messages.profile_completed_successfully": "Je profiel is succesvol bijgewerkt!"
+    "messages.profile_completed_successfully": "Je profiel is succesvol bijgewerkt!",
+    "messages.booking_created": "Boeking succesvol aangemaakt!"
 } 
