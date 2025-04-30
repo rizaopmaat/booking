@@ -157,7 +157,8 @@
                                 <form action="{{ route('admin.bookings.destroy', $booking) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ __('Weet je zeker dat je deze boeking wilt verwijderen?') }}')">{{ __('Verwijderen') }}</button>
+                                    <button type="submit" class="text-red-600 hover:text-red-900" 
+                                            onclick="return confirm('{!! addslashes(__('Weet je zeker dat je deze boeking wilt verwijderen?')) !!}')">{{ __('Verwijderen') }}</button>
                                 </form>
                             </td>
                         </tr>

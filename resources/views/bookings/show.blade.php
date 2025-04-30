@@ -40,24 +40,24 @@
                 {{-- Check-in/Check-out Dates --}}
                 <div>
                     <h2 class="text-xl font-semibold font-playfair text-gray-700 mb-3">{{ __('bookings.table.check_in') }}</h2>
-                    <p class="text-gray-600">{{ \Carbon\Carbon::parse($booking->check_in_date)->format('l, F j, Y') }}</p>
+                    <p class="text-gray-600">{{ \Carbon\Carbon::parse($booking->check_in_date)->translatedFormat('l, F j, Y') }}</p>
                 </div>
                 <div>
                     <h2 class="text-xl font-semibold font-playfair text-gray-700 mb-3">{{ __('bookings.table.check_out') }}</h2>
-                    <p class="text-gray-600">{{ \Carbon\Carbon::parse($booking->check_out_date)->format('l, F j, Y') }}</p>
+                    <p class="text-gray-600">{{ \Carbon\Carbon::parse($booking->check_out_date)->translatedFormat('l, F j, Y') }}</p>
                 </div>
 
                 {{-- Number of Guests --}}
                 <div>
                     <h2 class="text-xl font-semibold font-playfair text-gray-700 mb-3">{{ __('bookings.table.guests') }}</h2>
-                    <p class="text-gray-600">{{ $booking->num_guests }} {{ trans_choice('Guest|Guests', $booking->num_guests) }}</p>
+                    <p class="text-gray-600">{{ $booking->num_guests }} {{ trans_choice('Gast|Gasten', $booking->num_guests) }}</p>
                 </div>
 
                 {{-- Number of Nights --}}
                 <div>
                     <h2 class="text-xl font-semibold font-playfair text-gray-700 mb-3">{{ __('Aantal nachten') }}</h2>
                     @php $nights = \Carbon\Carbon::parse($booking->check_in_date)->diffInDays($booking->check_out_date); @endphp
-                    <p class="text-gray-600">{{ $nights }} {{ trans_choice('night|nights', $nights) }}</p>
+                    <p class="text-gray-600">{{ $nights }} {{ trans_choice('nacht|nachten', $nights) }}</p>
                 </div>
 
                  {{-- Selected Options --}}
@@ -68,18 +68,18 @@
                         @foreach($booking->options as $option)
                         <li>
                             {{ $option->pivot->quantity }}x {{ $option->getTranslation('name', App::getLocale()) }}
-                            <span class="text-sm text-gray-500">(€{{ number_format($option->pivot->price_at_booking, 2) }} @if($option->price_type == 'per_person') {{ __('per person') }} @endif)</span>
-                             - Totaal: €{{ number_format($option->pivot->price_at_booking * $option->pivot->quantity, 2) }}
+                            <span class="text-sm text-gray-500">(€{{ number_format($option->pivot->price_at_booking, 2, ',', '.') }} @if($option->price_type == 'per_person') {{ __('per person') }} @endif)</span>
+                             - Totaal: €{{ number_format($option->pivot->price_at_booking * $option->pivot->quantity, 2, ',', '.') }}
                         </li>
                         @endforeach
                     </ul>
-                    <p class="mt-2 text-sm font-semibold text-gray-700">{{ __('Packages Subtotal') }}: €{{ number_format($booking->options_total, 2) }}</p>
+                    <p class="mt-2 text-sm font-semibold text-gray-700">{{ __('Packages Subtotal') }}: €{{ number_format($booking->options_total, 2, ',', '.') }}</p>
                 </div>
                 @endif
 
                 {{-- Total Price --}}
                 <div class="md:col-span-2 pt-6 mt-6 border-t border-gray-200">
-                    <h2 class="text-2xl font-bold font-playfair text-red-800 text-right">{{ __('bookings.table.total') }}: €{{ number_format($booking->total_price, 2) }}</h2>
+                    <h2 class="text-2xl font-bold font-playfair text-red-800 text-right">{{ __('bookings.table.total') }}: €{{ number_format($booking->total_price, 2, ',', '.') }}</h2>
                 </div>
             </div>
 
@@ -107,7 +107,8 @@
 
             @if($canCancel)
             <div class="mt-8 pt-6 border-t border-gray-200 text-center">
-                <form action="{{ route('bookings.cancel', $booking) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('bookings.actions.cancel_confirm') }}')">
+                <form action="{{ route('bookings.cancel', $booking) }}" method="POST" class="inline" 
+                      onsubmit="return confirm('{!! addslashes(__('bookings.actions.cancel_confirm')) !!}')">
                     @csrf
                     @method('PUT')
                     <button type="submit" class="bg-gray-200 hover:bg-red-100 text-red-700 font-semibold py-2 px-5 rounded-md transition duration-300">

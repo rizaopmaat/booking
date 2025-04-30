@@ -73,7 +73,8 @@
                             }
                         @endphp
                         @if($canCancel)
-                        <form action="{{ route('bookings.cancel', $booking) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('bookings.actions.cancel_confirm') }}')">
+                        <form action="{{ route('bookings.cancel', $booking) }}" method="POST" class="inline" 
+                              onsubmit="return confirm('{!! addslashes(__('bookings.actions.cancel_confirm')) !!}')">
                             @csrf
                             @method('PUT')
                             <button type="submit" class="text-gray-500 hover:text-red-600">{{ __('bookings.actions.cancel') }}</button>

@@ -30,7 +30,7 @@ class BookingController extends Controller
         // Get all bookings and group them by status and date
         $upcomingBookings = $user->bookings()
             ->where('status', 'confirmed')
-            ->where('check_in_date', '>', now())
+            ->where('check_in_date', '>=', today())
             ->orderBy('check_in_date')
             ->get();
             
