@@ -129,6 +129,7 @@ class AdminRoomController extends Controller
             'delete_images' => 'nullable|array',
             'delete_images.*' => 'integer|exists:room_images,id',
             'is_available' => 'boolean',
+            'total_inventory' => 'required|integer|min:0'
         ]);
 
         $roomData = $validated;
