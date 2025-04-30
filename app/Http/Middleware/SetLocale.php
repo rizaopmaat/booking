@@ -29,27 +29,24 @@ class SetLocale
             }
         }
         // Priority 2: User is logged in and has a language preference in their profile
-        // This is only checked if no session locale was found
         elseif (Auth::check() && Auth::user()->language) {
             $userLocale = Auth::user()->language;
             if (in_array($userLocale, config('app.available_locales'))) {
                 $locale = $userLocale;
-                // Store user preference in session *if* no specific session locale was chosen before
+                // Store user preference in session if not already set by switcher
                 Session::put('locale', $locale);
             }
         }
-        // Priority 3: Browser preference (optional - currently commented out)
-        /*
+        // Priority 3: Browser preference (currently enabled)
         elseif ($request->server('HTTP_ACCEPT_LANGUAGE')) {
             $browserLocale = substr($request->server('HTTP_ACCEPT_LANGUAGE'), 0, 2);
             if (in_array($browserLocale, config('app.available_locales'))) {
                 $locale = $browserLocale;
-                Session::put('locale', $locale); // Store detected locale in session
+                Session::put('locale', $locale); 
             }
         }
-        */
 
-        // Final check: if somehow the determined locale is invalid, revert to fallback
+        // Final check: if determined locale is invalid, revert to fallback
         if (!in_array($locale, config('app.available_locales'))) {
             $locale = config('app.fallback_locale');
             Session::put('locale', $locale);

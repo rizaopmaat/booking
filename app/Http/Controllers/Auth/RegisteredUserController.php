@@ -48,7 +48,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'language' => $request->language,
             'password' => Hash::make($request->password),
-            // Set optional fields to null or empty as appropriate
+            // Ensure optional fields are null initially
             'phone_number' => null,
             'street' => null,
             'house_number' => null,
@@ -61,7 +61,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // Redirect to a page asking if they want to complete their profile now
         return redirect(route('profile.complete', absolute: false))->with('new_registration', true);
     }
 }

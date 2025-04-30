@@ -216,15 +216,15 @@
                             <div>
                                 <label for="first_name" class="block text-sm font-medium text-gray-700">{{ __('First Name') }}</label>
                                 <input type="text" name="first_name" id="first_name" value="{{ old('first_name', Auth::user()->first_name ?? '') }}" 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm {{ $hasFirstName ? 'bg-gray-100 text-gray-500' : '' }}" 
-                                       {{ !$hasFirstName ? 'required' : 'readonly' }}>
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
+                                       {{ !$hasFirstName ? 'required' : '' }}>
                                  @error('first_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div>
                                 <label for="last_name" class="block text-sm font-medium text-gray-700">{{ __('Last Name') }}</label>
                                 <input type="text" name="last_name" id="last_name" value="{{ old('last_name', Auth::user()->last_name ?? '') }}" 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm {{ $hasLastName ? 'bg-gray-100 text-gray-500' : '' }}" 
-                                       {{ !$hasLastName ? 'required' : 'readonly' }}>
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
+                                       {{ !$hasLastName ? 'required' : '' }}>
                                  @error('last_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -237,8 +237,8 @@
                         <div class="mb-4">
                             <label for="phone" class="block text-sm font-medium text-gray-700">{{ __('Phone Number') }}</label>
                             <input type="tel" name="phone" id="phone" value="{{ old('phone', Auth::user()->phone_number ?? '') }}" 
-                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm {{ $hasPhone ? 'bg-gray-100 text-gray-500' : '' }}" 
-                                   {{ !$hasPhone ? 'required' : 'readonly' }}>
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
+                                   {{ !$hasPhone ? 'required' : '' }}>
                             @error('phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
 
@@ -247,15 +247,15 @@
                              <div>
                                 <label for="street" class="block text-sm font-medium text-gray-700">{{ __('Street') }}</label>
                                 <input type="text" name="street" id="street" value="{{ old('street', Auth::user()->street ?? '') }}" 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm {{ $hasStreet ? 'bg-gray-100 text-gray-500' : '' }}" 
-                                       {{ !$hasStreet ? 'required' : 'readonly' }}>
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
+                                       {{ !$hasStreet ? 'required' : '' }}>
                                 @error('street') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                              <div>
                                 <label for="house_number" class="block text-sm font-medium text-gray-700">{{ __('House Number') }}</label>
                                 <input type="text" name="house_number" id="house_number" value="{{ old('house_number', Auth::user()->house_number ?? '') }}" 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm {{ $hasHouseNumber ? 'bg-gray-100 text-gray-500' : '' }}" 
-                                       {{ !$hasHouseNumber ? 'required' : 'readonly' }}>
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
+                                       {{ !$hasHouseNumber ? 'required' : '' }}>
                                  @error('house_number') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -263,31 +263,31 @@
                             <div>
                                 <label for="postal_code" class="block text-sm font-medium text-gray-700">{{ __('Postal Code') }}</label>
                                 <input type="text" name="postal_code" id="postal_code" value="{{ old('postal_code', Auth::user()->postal_code ?? '') }}" 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm {{ $hasPostalCode ? 'bg-gray-100 text-gray-500' : '' }}" 
-                                       {{ !$hasPostalCode ? 'required' : 'readonly' }}>
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
+                                       {{ !$hasPostalCode ? 'required' : '' }}>
                                  @error('postal_code') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div>
                                 <label for="city" class="block text-sm font-medium text-gray-700">{{ __('City') }}</label>
                                 <input type="text" name="city" id="city" value="{{ old('city', Auth::user()->city ?? '') }}" 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm {{ $hasCity ? 'bg-gray-100 text-gray-500' : '' }}" 
-                                       {{ !$hasCity ? 'required' : 'readonly' }}>
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
+                                       {{ !$hasCity ? 'required' : '' }}>
                                  @error('city') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div>
                                 <label for="country" class="block text-sm font-medium text-gray-700">{{ __('Country') }}</label>
                                 <input type="text" name="country" id="country" value="{{ old('country', Auth::user()->country ?? '') }}" 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm {{ $hasCountry ? 'bg-gray-100 text-gray-500' : '' }}" 
-                                       {{ !$hasCountry ? 'required' : 'readonly' }}>
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" 
+                                       {{ !$hasCountry ? 'required' : '' }}>
                                  @error('country') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
-                        @if($hasAllDetails)
-                             <p class="text-xs text-gray-500 mt-2">{{ __('Your details are pre-filled from your profile. To change them, please go to your profile settings.') }}</p>
-                         @else
-                             <p class="text-xs text-gray-500 mt-2">{{ __('Please complete your details. They will be saved to your profile for future bookings.') }}</p> {{-- Add translation --}}
-                         @endif
+                        @if(!$hasAllDetails)
+                        <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-700">
+                            <p>{{ __('messages.complete_profile_info_booking') }}</p> {{-- Nieuwe vertaalsleutel nodig --}}
+                        </div>
+                        @endif
 
                     @endguest {{-- End Guest/Auth Conditional --}}
 

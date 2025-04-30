@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 class AdminRoomController extends Controller
 {
-    /**
-     * Display a listing of the rooms.
-     */
     public function index(Request $request)
     {
         try {
@@ -42,17 +39,11 @@ class AdminRoomController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new room.
-     */
     public function create()
     {
         return view('admin.rooms.create');
     }
 
-    /**
-     * Store a newly created room in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([

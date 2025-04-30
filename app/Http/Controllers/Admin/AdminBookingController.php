@@ -4,34 +4,38 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
-use App\Models\Room;    // Import Room model
-use App\Models\User;    // Import User model
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log; // Import Log facade
-use Illuminate\Support\Facades\Mail; // Import Mail facade
-use Illuminate\Support\Facades\App; // Import App facade
+use Illuminate\Support\Facades\Log; 
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\App;
 
 class AdminBookingController extends Controller
 {
-    /**
-     * Display a listing of the bookings.
-     */
     public function index(Request $request)
     {
         try {
-            $query = Booking::with(['user', 'room'])->latest(); // Eager load relations
+            $query = Booking::with(['user', 'room'])->latest(); 
 
             // Apply filters
             if ($request->filled('status')) {
                 $query->where('status', $request->status);
             }
-            if ($request->filled('check_in_from')) {
-                $query->whereDate('check_in_date', '>=', $request->check_in_from);
+
+            // Apply date range overlap filter
+            $from = $request->filled('check_in_from') ? $request->check_in_from : null;
+            $to = $request->filled('check_in_to') ? $request->check_in_to : null;
+
+            // Filter by EXACT check-in date from 'from' field
+            if ($from) {
+                $query->whereDate('check_in_date', '=', $from);
             }
-            if ($request->filled('check_in_to')) {
-                $query->whereDate('check_in_date', '<=', $request->check_in_to);
+
+            // Filter by check-out date <= 'to' field
+            if ($to) {
+                $query->whereDate('check_out_date', '<=', $to);
             }
-            // Add more filters if needed (e.g., search by user name, room name)
 
             $bookings = $query->paginate(10);
 
@@ -45,33 +49,21 @@ class AdminBookingController extends Controller
         }
     }
 
-    /**
-     * Display the specified booking.
-     */
     public function show(Booking $booking)
     {
-        // Eager load relations for the view
         $booking->load(['user', 'room']);
         return view('admin.bookings.show', compact('booking'));
     }
 
-    /**
-     * Show the form for editing the specified booking.
-     */
     public function edit(Booking $booking)
     {
-        // Fetch rooms and users for dropdowns in the edit form
-        $rooms = Room::orderBy('name->' . app()->getLocale())->get(); // Order by translated name
+        $rooms = Room::orderBy('name->' . app()->getLocale())->get();
         $users = User::where('is_admin', false)->orderBy('name')->get();
         return view('admin.bookings.edit', compact('booking', 'rooms', 'users'));
     }
 
-    /**
-     * Update the specified booking in storage.
-     */
     public function update(Request $request, Booking $booking)
     {
-        // TODO: Add validation for room capacity based on guests and dates
         $validated = $request->validate([
             'room_id' => 'required|exists:rooms,id',
             'user_id' => 'required|exists:users,id',
@@ -91,9 +83,6 @@ class AdminBookingController extends Controller
         }
     }
 
-    /**
-     * Remove the specified booking from storage.
-     */
     public function destroy(Booking $booking)
     {
         try {
@@ -105,10 +94,6 @@ class AdminBookingController extends Controller
         }
     }
 
-     /**
-     * Update the status of the specified booking.
-     * This is a custom action, not part of the standard resource controller.
-     */
     public function updateStatus(Request $request, Booking $booking)
     {
         $validated = $request->validate([
@@ -137,7 +122,7 @@ class AdminBookingController extends Controller
                     App::setLocale($originalLocale); 
                 } catch (\Exception $e) {
                     Log::error("Failed to send booking status update email for booking {$booking->id} (status: {$newStatus}): " . $e->getMessage());
-                    // Restore original locale even if mail fails
+                    // Restore original locale if mail fails
                     App::setLocale($originalLocale);
                 }
             } else {

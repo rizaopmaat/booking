@@ -29,12 +29,20 @@ class BookingRequested extends Mailable
      */
     public function envelope(): Envelope
     {
+        // Store original locale
+        $originalLocale = app()->getLocale();
+
         // Set locale based on user preference if available
-        $locale = $this->booking->user->language ?? app()->getLocale();
+        $locale = $this->booking->user->language ?? $originalLocale;
         app()->setLocale($locale);
 
+        $subject = __('emails.booking_requested.title');
+
+        // Restore original locale
+        app()->setLocale($originalLocale);
+
         return new Envelope(
-            subject: __('emails.booking_requested.title'),
+            subject: $subject,
         );
     }
 

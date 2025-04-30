@@ -106,7 +106,7 @@
                                 {{ __('Bewerken') }}
                             </a>
                             
-                            <form action="{{ route('admin.users.toggle-admin', $user) }}" method="POST" class="inline">
+                            <form action="{{ route('admin.users.toggleAdmin', $user) }}" method="POST" class="inline">
                                 @csrf
                                 @method('PUT')
                                 <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ $user->is_admin ? __('messages.confirm_revoke_admin') : __('messages.confirm_make_admin') }}')">
