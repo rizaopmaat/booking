@@ -73,26 +73,7 @@
                 </label>
             </div>
 
-            {{-- Wachtwoord wijzigen (optioneel) --}}
-            <div class="mb-6 border-t pt-6">
-                <h3 class="text-lg font-medium text-gray-700 mb-4">{{ __('Wachtwoord wijzigen (optioneel)') }}</h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">{{ __('Nieuw wachtwoord') }}</label>
-                        <input type="password" name="password" id="password" 
-                            class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-red-200 focus:border-red-500 @error('password') border-red-500 @enderror">
-                    </div>
-
-                    <div>
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">{{ __('Bevestig wachtwoord') }}</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" 
-                            class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-red-200 focus:border-red-500">
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-4">
+            <div class="flex justify-end gap-4 border-t pt-6">
                 <a href="{{ route('admin.users.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-md transition">
                     {{ __('Annuleren') }}
                 </a>
@@ -101,6 +82,18 @@
                 </button>
             </div>
         </form>
+
+        {{-- Wachtwoord Reset Link Sturen --}}
+        <div class="mb-6 border-t p-6">
+            <h3 class="text-lg font-medium text-gray-700 mb-4">{{ __('admin.users.send_reset_link_title') }}</h3>
+            <form action="{{ route('admin.users.sendResetLink', $user) }}" method="POST">
+                @csrf
+                <button type="submit" 
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition">
+                    {{ __('admin.users.send_reset_link_button') }}
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 @endsection 

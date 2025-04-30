@@ -66,9 +66,9 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        // Check if the password is correct
+        // Incorrect password provided
         if (!Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['password' => 'Het wachtwoord is onjuist.']);
+            return back()->withErrors(['password' => __('auth.password')]); // Use standard auth translation
         }
 
         Auth::logout();
@@ -97,12 +97,10 @@ class ProfileController extends Controller
      */
     public function saveComplete(Request $request): RedirectResponse
     {
-        // If user chose to skip, just redirect to bookings
         if ($request->has('skip')) {
             return redirect()->route('bookings.index');
         }
 
-        // Otherwise validate and save the data
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],

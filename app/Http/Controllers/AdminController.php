@@ -7,13 +7,12 @@ use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Auth; // Added for Auth::user() check, though not directly used here for flash messages
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Mock data voor het dashboard (geen database nodig)
         $mockData = [
             'totalRooms' => 10,
             'activeBookings' => 5,
@@ -30,26 +29,21 @@ class AdminController extends Controller
         try {
             $query = Room::query();
             
-            // Eventuele filters toepassen
             if ($request->filled('is_available')) {
                 $query->where('is_available', $request->is_available);
             }
             
-            // Zoeken op naam - needs update for translatable fields
             if ($request->filled('search')) {
-                // Get current locale
                 $locale = app()->getLocale();
-                // Search in the JSON field for the current locale
                 $query->where('name->' . $locale, 'like', '%' . $request->search . '%');
             }
             
-            // Pagineren van resultaten
             $rooms = $query->paginate(10);
             
             return view('admin.rooms.index', compact('rooms'));
         } catch (\Exception $e) {
             return view('admin.rooms.index', [
-                'error' => __('messages.error_loading_rooms', ['error' => $e->getMessage()]), // Use translation
+                'error' => __('messages.error_loading_rooms', ['error' => $e->getMessage()]),
                 'rooms' => new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10)
             ]);
         }
@@ -60,7 +54,6 @@ class AdminController extends Controller
         try {
             $query = Booking::with(['user', 'room'])->latest();
             
-            // Toepassen van filters
             if ($request->filled('status')) {
                 $query->where('status', $request->status);
             }
@@ -73,13 +66,12 @@ class AdminController extends Controller
                 $query->whereDate('check_in', '<=', $request->check_in_to);
             }
             
-            // Pagineren van resultaten
             $bookings = $query->paginate(10);
             
             return view('admin.bookings.index', compact('bookings'));
         } catch (\Exception $e) {
             return view('admin.bookings.index', [
-                'error' => __('messages.error_loading_bookings', ['error' => $e->getMessage()]), // Use translation
+                'error' => __('messages.error_loading_bookings', ['error' => $e->getMessage()]),
                 'bookings' => new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10)
             ]);
         }
@@ -87,11 +79,9 @@ class AdminController extends Controller
     
     public function stats()
     {
-        // Get statistics for the admin dashboard
         return view('admin.stats');
     }
     
-    // Room CRUD methods
     public function createRoom()
     {
         return view('admin.rooms.create');
@@ -108,52 +98,41 @@ class AdminController extends Controller
             'description.en' => 'required|string',
             'price' => 'required|numeric|min:0',
             'capacity' => 'required|integer|min:1',
-            // Validate main image (optional)
             'image' => 'nullable|image|max:2048',
-            // Validate gallery images (array, each must be an image)
             'images' => 'nullable|array',
-            'images.*' => 'image|max:2048', // Validate each file in the array
+            'images.*' => 'image|max:2048',
             'is_available' => 'boolean',
         ]);
 
         $roomData = $validated;
-        unset($roomData['images']); // Remove images array before creating the room
+        unset($roomData['images']);
 
-        // Handle main image upload
         if ($request->hasFile('image')) {
-            // Store in 'rooms/main' subdirectory for clarity
             $imagePath = $request->file('image')->store('rooms/main', 'public');
-            // Store path relative to disk root, e.g., 'rooms/main/...'
             $roomData['image'] = $imagePath;
         } else {
-            $roomData['image'] = null; // Ensure it's null if not uploaded
+            $roomData['image'] = null;
         }
 
 
         $roomData['is_available'] = $request->boolean('is_available');
 
-        // Create the room first
         $room = Room::create($roomData);
 
-        // Handle gallery images upload
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $galleryImage) {
-                // Store in 'rooms/gallery' subdirectory
                 $galleryImagePath = $galleryImage->store('rooms/gallery', 'public');
                 $room->images()->create([
-                    'path' => $galleryImagePath, // Store path relative to disk root
-                    'order' => $index + 1, // Simple ordering based on upload order
-                    // Add caption handling here if needed
+                    'path' => $galleryImagePath,
+                    'order' => $index + 1,
                 ]);
             }
         }
 
-        // If no main image was uploaded, but gallery images were,
-        // set the first gallery image as the main image automatically.
         if (is_null($room->image) && $room->images()->exists()) {
              $firstGalleryImage = $room->images()->orderBy('order')->first();
              if ($firstGalleryImage) {
-                 $room->image = $firstGalleryImage->path; // Use the path relative to the disk
+                 $room->image = $firstGalleryImage->path;
                  $room->save();
              }
         }
@@ -169,7 +148,6 @@ class AdminController extends Controller
     
     public function updateRoom(Request $request, Room $room)
     {
-        // Validation needs update for translatable fields
         $validated = $request->validate([
             'name' => 'required|array',
             'name.nl' => 'required|string|max:255',
@@ -183,38 +161,29 @@ class AdminController extends Controller
             'is_available' => 'boolean',
         ]);
         
-        // Handle image upload
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('rooms', 'public');
             $validated['image'] = '/storage/' . $imagePath;
-            // Optionally delete old image if needed
         }
 
-        // Ensure 'is_available' is set
         $validated['is_available'] = $request->boolean('is_available');
 
-        // Update the room
         $room->update($validated);
         
-        return redirect()->route('admin.rooms')->with('success', __('messages.room_updated')); // Use translation
+        return redirect()->route('admin.rooms')->with('success', __('messages.room_updated'));
     }
     
     public function destroyRoom(Room $room)
     {
-        // Check if room has bookings
         if ($room->bookings()->exists()) {
-            return back()->with('error', __('messages.room_delete_has_bookings')); // Use translation
+            return back()->with('error', __('messages.room_delete_has_bookings'));
         }
         
-        // Optionally delete image file
-        // ...
-
         $room->delete();
         
-        return redirect()->route('admin.rooms')->with('success', __('messages.room_deleted')); // Use translation
+        return redirect()->route('admin.rooms')->with('success', __('messages.room_deleted'));
     }
     
-    // Booking management
     public function showBooking(Booking $booking)
     {
         return view('admin.bookings.show', compact('booking'));
@@ -241,16 +210,16 @@ class AdminController extends Controller
         
         $booking->update($validated);
         
-        return redirect()->route('admin.bookings')->with('success', __('messages.booking_updated')); // Use translation
+        return redirect()->route('admin.bookings')->with('success', __('messages.booking_updated'));
     }
     
     public function destroyBooking(Booking $booking)
     {
         try {
             $booking->delete();
-            return redirect()->route('admin.bookings')->with('success', __('messages.booking_deleted')); // Use translation
+            return redirect()->route('admin.bookings')->with('success', __('messages.booking_deleted'));
         } catch (\Exception $e) {
-            return redirect()->route('admin.bookings')->with('error', __('messages.booking_delete_error', ['error' => $e->getMessage()])); // Use translation
+            return redirect()->route('admin.bookings')->with('error', __('messages.booking_delete_error', ['error' => $e->getMessage()]));
         }
     }
     
@@ -262,6 +231,6 @@ class AdminController extends Controller
         
         $booking->update(['status' => $validated['status']]);
         
-        return back()->with('success', __('messages.booking_status_updated')); // Use translation
+        return back()->with('success', __('messages.booking_status_updated'));
     }
 } 

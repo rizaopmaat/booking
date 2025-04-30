@@ -34,7 +34,7 @@
         <label for="price_type" class="block text-sm font-medium text-gray-700">{{ __('Price Type') }}</label>
         <select name="price_type" id="price_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm" required>
             <option value="fixed" {{ old('price_type', $option->price_type ?? 'fixed') == 'fixed' ? 'selected' : '' }}>{{ __('Fixed') }}</option>
-            <option value="per_person" {{ old('price_type', $option->price_type ?? '') == 'per_person' ? 'selected' : '' }}>{{ __('Per Person') }}</option>
+            <option value="per_guest" {{ old('price_type', $option->price_type ?? '') == 'per_guest' ? 'selected' : '' }}>{{ __('Per Guest') }}</option>
         </select>
         @error('price_type') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
     </div>
@@ -61,7 +61,7 @@
 </div>
 
 <div class="flex justify-end">
-    <a href="{{ route('admin.booking-options.index') }}" class="mr-4 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+    <a href="{{ route('admin.options.index') }}" class="mr-4 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
         {{ __('Cancel') }}
     </a>
     <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">

@@ -15,7 +15,7 @@
             <a href="{{ route('admin.bookings.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 {{ request()->routeIs('admin.bookings*') ? 'bg-gray-700' : '' }}">
                 {{ __('Boekingen Beheren') }}
             </a>
-            <a href="{{ route('admin.booking-options.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 {{ request()->routeIs('admin.booking-options*') ? 'bg-gray-700' : '' }}">
+            <a href="{{ route('admin.options.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 {{ request()->routeIs('admin.options*') ? 'bg-gray-700' : '' }}">
                 {{ __('Opties Beheren') }}
             </a>
             {{-- Add more admin links as needed --}}

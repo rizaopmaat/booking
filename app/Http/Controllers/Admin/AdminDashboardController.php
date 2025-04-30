@@ -10,38 +10,35 @@ use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
 {
-    /**
-     * Display the admin dashboard.
-     */
     public function index()
     {
-        $totalRooms = Room::count();
+        // Tel de totale inventaris van alle kamertypes
+        $totalInventory = Room::sum('total_inventory');
         $today = Carbon::today();
 
-        // Actieve boekingen (check-in vandaag of eerder, check-out vandaag of later, status confirmed)
         $activeBookings = Booking::where('status', 'confirmed')
                                 ->whereDate('check_in_date', '<=', $today)
-                                ->whereDate('check_out_date', ' > ', $today) // Nog niet uitgecheckt
+                                ->whereDate('check_out_date', '>', $today)
                                 ->count();
 
-        // Pending boekingen (status pending)
         $pendingBookings = Booking::where('status', 'pending')->count();
 
-        // Bezettingsgraad voor vandaag (simpel)
-        // Aantal unieke kamers die vandaag bezet zijn (actieve, bevestigde boeking)
         $occupiedRoomsToday = Booking::where('status', 'confirmed')
                                     ->whereDate('check_in_date', '<=', $today)
-                                    ->whereDate('check_out_date', ' > ', $today)
+                                    ->whereDate('check_out_date', '>', $today)
                                     ->distinct('room_id')
                                     ->count('room_id');
 
-        $occupancyRate = ($totalRooms > 0) ? round(($occupiedRoomsToday / $totalRooms) * 100) : 0;
+        // Bereken aantal beschikbare kamers vandaag
+        $availableRoomsToday = max(0, $totalInventory - $activeBookings);
 
-        // Recente activiteit (kan uitgebreider, bv. laatste 5 boekingen/updates)
-        $recentBookings = Booking::with(['user', 'room'])->latest()->take(5)->get(); // Voorbeeld
+        // Bereken bezettingsgraad op basis van totale inventaris
+        $occupancyRate = ($totalInventory > 0) ? round(($activeBookings / $totalInventory) * 100) : 0;
+
+        $recentBookings = Booking::with(['user', 'room'])->latest()->take(5)->get();
 
         return view('admin.dashboard', compact(
-            'totalRooms',
+            'availableRoomsToday',
             'activeBookings',
             'pendingBookings',
             'occupancyRate',
@@ -49,13 +46,8 @@ class AdminDashboardController extends Controller
         ));
     }
 
-    /**
-     * Display statistics (if this is a separate page).
-     */
     public function stats()
     {
-        // TODO: Fetch actual statistics
-        // Rename stats method if it represents the index of a stats resource
         return view('admin.stats');
     }
 }

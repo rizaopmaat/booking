@@ -7,18 +7,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
 
 class AdminUserController extends Controller
 {
-    /**
-     * Display a listing of users
-     */
     public function index(Request $request)
     {
         try {
             $query = User::query();
             
-            // Zoeken op naam of email
+            // Search by name or email
             if ($request->filled('search')) {
                 $search = $request->search;
                 $query->where(function($q) use ($search) {
@@ -27,7 +25,7 @@ class AdminUserController extends Controller
                 });
             }
             
-            // Filter op admin status
+            // Filter on admin status
             if ($request->filled('is_admin')) {
                 $query->where('is_admin', $request->boolean('is_admin'));
             }
@@ -41,17 +39,11 @@ class AdminUserController extends Controller
         }
     }
 
-    /**
-     * Toon het formulier om een gebruiker te bewerken
-     */
     public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));
     }
 
-    /**
-     * Update de gebruiker
-     */
     public function update(Request $request, User $user)
     {
         try {
@@ -64,10 +56,8 @@ class AdminUserController extends Controller
                 'password' => 'nullable|string|min:8|confirmed',
             ]);
             
-            // Update de naam (combinatie van voornaam en achternaam)
             $validated['name'] = $validated['first_name'] . ' ' . $validated['last_name'];
             
-            // Alleen wachtwoord updaten als het is ingevuld
             if (!empty($validated['password'])) {
                 $validated['password'] = Hash::make($validated['password']);
             } else {
@@ -83,13 +73,9 @@ class AdminUserController extends Controller
         }
     }
 
-    /**
-     * Toggle admin status
-     */
     public function toggleAdmin(User $user)
     {
         try {
-            // Voorkom dat de laatste admin zijn rechten verliest
             if ($user->is_admin && User::where('is_admin', true)->count() <= 1) {
                 return back()->with('error', __('messages.must_have_one_admin'));
             }
@@ -107,18 +93,13 @@ class AdminUserController extends Controller
         }
     }
 
-    /**
-     * Verwijder een gebruiker
-     */
     public function destroy(User $user)
     {
         try {
-            // Voorkom dat de laatste admin wordt verwijderd
             if ($user->is_admin && User::where('is_admin', true)->count() <= 1) {
                 return back()->with('error', __('messages.cannot_delete_last_admin'));
             }
             
-            // Check of de gebruiker boekingen heeft
             if ($user->bookings()->exists()) {
                 return back()->with('error', __('messages.user_delete_has_bookings'));
             }
@@ -129,6 +110,28 @@ class AdminUserController extends Controller
         } catch (\Exception $e) {
             Log::error('Error deleting user: ' . $e->getMessage());
             return back()->with('error', __('messages.error_deleting_user'));
+        }
+    }
+
+    public function sendPasswordResetLink(Request $request, User $user)
+    {
+        try {
+            // Gebruik Laravel's ingebouwde password broker
+            $status = Password::broker()->sendResetLink(
+                ['email' => $user->email] // Stuur naar het e-mailadres van de gebruiker
+            );
+
+            if ($status == Password::RESET_LINK_SENT) {
+                return back()->with('success', __('admin.users.reset_link_sent_success', ['email' => $user->email]));
+            } else {
+                // Log de status voor debugging als het onverwacht is
+                Log::warning('Password reset link sending failed for user ' . $user->id . ' with status: ' . $status);
+                // Vertaal de status voor de admin (indien mogelijk/bekend)
+                return back()->with('error', __($status)); 
+            }
+        } catch (\Exception $e) {
+            Log::error('Error sending password reset link for user ' . $user->id . ': ' . $e->getMessage());
+            return back()->with('error', 'An unexpected error occurred while sending the password reset link.'); // Generieke foutmelding
         }
     }
 } 

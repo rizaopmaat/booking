@@ -9,7 +9,7 @@
     </div>
 
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <form action="{{ route('admin.booking-options.store') }}" method="POST">
+        <form action="{{ route('admin.options.store') }}" method="POST">
             @include('admin.booking_options._form', ['option' => new App\Models\BookingOption(), 'submitText' => __('Create Option')])
         </form>
     </div>
