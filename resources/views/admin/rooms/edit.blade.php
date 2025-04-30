@@ -58,7 +58,7 @@
             </div>
 
             {{-- Other Room Fields --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                  <div>
                     <label for="price" class="block text-gray-700 text-sm font-bold mb-2">{{ __('Prijs per nacht (€)') }} <span class="text-red-500">*</span></label>
                     <input type="number" step="0.01" min="0" name="price" id="price" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('price') border-red-500 @enderror" value="{{ old('price', $room->price) }}" required>
@@ -68,6 +68,13 @@
                     <label for="capacity" class="block text-gray-700 text-sm font-bold mb-2">{{ __('Capaciteit (personen)') }} <span class="text-red-500">*</span></label>
                     <input type="number" min="1" name="capacity" id="capacity" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('capacity') border-red-500 @enderror" value="{{ old('capacity', $room->capacity) }}" required>
                     @error('capacity') <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p> @enderror
+                </div>
+                 <div>
+                    <label for="total_inventory" class="block text-gray-700 text-sm font-bold mb-2">{{ __('Totaal Inventaris') }} <span class="text-red-500">*</span></label>
+                    <input type="number" min="0" name="total_inventory" id="total_inventory" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('total_inventory') border-red-500 @enderror" value="{{ old('total_inventory', $room->total_inventory) }}" required>
+                    @error('total_inventory')
+                        <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
