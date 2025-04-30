@@ -41,12 +41,9 @@ class Room extends Model
             return asset('/images/placeholder.png'); // Default placeholder if no images at all
         }
 
-        // Handle main image path (uploaded vs seeded)
-        if (Str::startsWith($this->image, '/storage/')) {
-            $path = Str::after($this->image, '/storage/');
-            return Storage::disk('public')->url($path);
-        }
-        return asset($this->image); // Assumed public path (e.g., from seeder)
+        // Correctly generate URL using the public disk for the main image path
+        // The stored path (e.g., 'rooms/main/xyz.png') is relative to the disk's root.
+        return Storage::disk('public')->url($this->image);
     }
 
     /**
