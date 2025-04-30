@@ -55,9 +55,9 @@ class AdminRoomController extends Controller
             'description.en' => 'required|string',
             'price' => 'required|numeric|min:0',
             'capacity' => 'required|integer|min:1',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:16384',
             'images' => 'nullable|array',
-            'images.*' => 'image|max:2048',
+            'images.*' => 'image|max:16384',
             'is_available' => 'boolean',
         ]);
 
@@ -123,9 +123,9 @@ class AdminRoomController extends Controller
             'description.en' => 'required|string',
             'price' => 'required|numeric|min:0',
             'capacity' => 'required|integer|min:1',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:16384',
             'images' => 'nullable|array',
-            'images.*' => 'image|max:2048',
+            'images.*' => 'image|max:16384',
             'delete_images' => 'nullable|array',
             'delete_images.*' => 'integer|exists:room_images,id',
             'is_available' => 'boolean',
