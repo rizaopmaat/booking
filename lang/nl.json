@@ -605,5 +605,15 @@
     "Gast details": "Gast details",
     "Telefoon": "Telefoon",
     "Taal": "Taal",
-    "Totaal Inventaris": "Totaal Inventaris"
+    "Totaal Inventaris": "Totaal Inventaris",
+    "Create Booking Option": "Boekingsoptie Aanmaken",
+    "Create New Booking Option": "Nieuwe Boekingsoptie Aanmaken",
+    "Edit Booking Option": "Boekingsoptie Bewerken",
+    "Price Type": "Prijstype",
+    "Is Cancellation Option?": "Is Annuleringsoptie?",
+    "Check if this package allows special cancellation.": "Vink aan als dit pakket speciale annulering toestaat.",
+    "Active?": "Actief?",
+    "Uncheck to hide this option from users.": "Vink uit om deze optie te verbergen voor gebruikers.",
+    "Create Option": "Optie Aanmaken",
+    "Update Option": "Optie Bijwerken"
 } 

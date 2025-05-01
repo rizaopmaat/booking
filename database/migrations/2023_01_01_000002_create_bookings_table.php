@@ -32,15 +32,34 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('booking_options', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->enum('price_type', ['fixed', 'per_night', 'per_guest'])->default('fixed');
+            $table->boolean('is_cancellation_option')->default(false);
+            $table->boolean('is_active')->default(true);
+            $table->integer('order')->default(0);
+            $table->timestamps();
+        });
+
+        Schema::create('booking_booking_option', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('booking_id')->constrained()->onDelete('cascade');
+            $table->foreignId('booking_option_id')->constrained()->onDelete('cascade');
+            $table->integer('quantity')->default(1);
+            $table->decimal('price_at_booking', 8, 2);
+            $table->decimal('price_at_booking_total', 8, 2);
+            $table->timestamps();
+        });
     }
 
     public function down(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-             if (Schema::hasColumn('bookings', 'payment_method')) {
-                 $table->dropColumn('payment_method');
-             }
-         });
+        Schema::dropIfExists('booking_booking_option');
+        Schema::dropIfExists('booking_options');
         Schema::dropIfExists('bookings');
     }
 }; 

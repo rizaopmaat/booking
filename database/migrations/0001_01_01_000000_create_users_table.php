@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\App;
 
 return new class extends Migration
 {
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->boolean('is_admin')->default(false);
+            $table->string('language', 2)->nullable()->default(App::getLocale());
             $table->rememberToken();
             $table->timestamps();
         });
@@ -51,20 +53,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-                'first_name',
-                'last_name',
-                'phone_number',
-                'street',
-                'house_number',
-                'postal_code',
-                'city',
-                'country'
-            ]);
-        });
-        Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('users');
     }
 };

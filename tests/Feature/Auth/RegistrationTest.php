@@ -19,21 +19,14 @@ class RegistrationTest extends TestCase
     public function test_new_users_can_register(): void
     {
         $response = $this->post('/register', [
-            'first_name' => 'Test',
-            'last_name' => 'User',
+            'name' => 'Test User',
             'email' => 'test@example.com',
-            'phone_number' => '0612345678',
-            'street' => 'Test Street',
-            'house_number' => '123',
-            'postal_code' => '1234AB',
-            'city' => 'Test City',
-            'country' => 'Netherlands',
             'language' => 'nl',
             'password' => 'password',
             'password_confirmation' => 'password',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('bookings.index', absolute: false));
+        $response->assertRedirect(route('profile.complete', absolute: false));
     }
 }
