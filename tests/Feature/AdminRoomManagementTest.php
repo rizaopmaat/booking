@@ -106,6 +106,9 @@ test('admin can update a room', function () {
         'price' => 150,
     ]);
 
+    // ADD total_inventory TO UPDATE DATA
+    $updateData['total_inventory'] = $room->total_inventory ?? 1;
+
     actingAs($admin)
         ->patch(route('admin.rooms.update', $room), $updateData)
         ->assertRedirect(route('admin.rooms.index'))
@@ -137,6 +140,9 @@ test('admin can update a room and delete gallery images', function () {
     $updateData = getRoomData([
         'delete_images' => [$image->id],
     ]);
+
+    // ADD total_inventory TO UPDATE DATA
+    $updateData['total_inventory'] = $room->total_inventory ?? 1;
 
     actingAs($admin)
         ->patch(route('admin.rooms.update', $room), $updateData)

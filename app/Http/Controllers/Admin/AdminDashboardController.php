@@ -12,7 +12,7 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
-        // Tel de totale inventaris van alle kamertypes
+        // COUNT TOTAL INVENTORY
         $totalInventory = Room::sum('total_inventory');
         $today = Carbon::today();
 
@@ -29,10 +29,10 @@ class AdminDashboardController extends Controller
                                     ->distinct('room_id')
                                     ->count('room_id');
 
-        // Bereken aantal beschikbare kamers vandaag
+        // Calculate number of available rooms today
         $availableRoomsToday = max(0, $totalInventory - $activeBookings);
 
-        // Bereken bezettingsgraad op basis van totale inventaris
+        // Calculate occupancy rate based on total inventory
         $occupancyRate = ($totalInventory > 0) ? round(($activeBookings / $totalInventory) * 100) : 0;
 
         $recentBookings = Booking::with(['user', 'room'])->latest()->take(5)->get();

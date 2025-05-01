@@ -20,6 +20,7 @@
 @foreach($booking->options as $option)
 *   {{ $option->pivot->quantity }}x {{ $option->getTranslation('name', App::getLocale()) }} (€{{ number_format($option->pivot->price_at_booking * $option->pivot->quantity, 2) }})
 @endforeach
+@endif
 
 **{{ __('emails.booking_confirmed.total_final') }}:** €{{ number_format($booking->total_price, 2) }}
 
