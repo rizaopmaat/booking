@@ -41,14 +41,13 @@ Route::middleware(['auth'])->group(function () {
 // 4. Admin Routes
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/stats', [AdminDashboardController::class, 'stats'])->name('stats');
 
     // Room Management
     Route::resource('rooms', AdminRoomController::class);
     Route::delete('rooms/{room}/gallery/{media}', [AdminRoomController::class, 'destroyMedia'])->name('rooms.gallery.destroy');
 
     // Booking Management
-    Route::resource('bookings', AdminBookingController::class)->except(['create', 'store']);
+    Route::resource('bookings', AdminBookingController::class)->except(['create', 'store', 'show']);
     Route::put('bookings/{booking}/status', [AdminBookingController::class, 'updateStatus'])->name('bookings.status');
 
     // User Management

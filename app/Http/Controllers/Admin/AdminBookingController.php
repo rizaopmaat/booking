@@ -49,12 +49,6 @@ class AdminBookingController extends Controller
         }
     }
 
-    public function show(Booking $booking)
-    {
-        $booking->load(['user', 'room']);
-        return view('admin.bookings.show', compact('booking'));
-    }
-
     public function edit(Booking $booking)
     {
         $rooms = Room::orderBy('name->' . app()->getLocale())->get();
