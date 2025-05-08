@@ -50,14 +50,14 @@
                 {{-- Number of Guests --}}
                 <div>
                     <h2 class="text-xl font-semibold font-playfair text-gray-700 mb-3">{{ __('bookings.table.guests') }}</h2>
-                    <p class="text-gray-600">{{ $booking->num_guests }} {{ trans_choice('Gast|Gasten', $booking->num_guests) }}</p>
+                    <p class="text-gray-600">{{ $booking->num_guests }}</p>
                 </div>
 
                 {{-- Number of Nights --}}
                 <div>
                     <h2 class="text-xl font-semibold font-playfair text-gray-700 mb-3">{{ __('Aantal nachten') }}</h2>
                     @php $nights = \Carbon\Carbon::parse($booking->check_in_date)->diffInDays($booking->check_out_date); @endphp
-                    <p class="text-gray-600">{{ $nights }} {{ trans_choice('nacht|nachten', $nights) }}</p>
+                    <p class="text-gray-600">{{ $nights }} </p>
                 </div>
 
                  {{-- Selected Options --}}
